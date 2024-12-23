@@ -1,5 +1,11 @@
 <layout id="WatchFace">
     <drawable class="Background" />
+    <drawable id="LeftGoalMeter" class="GoalMeter">
+        <param name="side">:left</param>
+        <param name="stroke">8</param>
+        <param name="height">160</param>
+        <param name="separator">2</param>
+    </drawable>
     <label id="TimeLabel" x="center" y="center" font="Graphics.FONT_LARGE" justification="Graphics.TEXT_JUSTIFY_CENTER" color="Graphics.COLOR_BLUE" />
     <label id="AmPmLabel" x="50%" y="60%" font="Graphics.FONT_LARGE" justification="Graphics.TEXT_JUSTIFY_CENTER" color="Graphics.COLOR_BLUE" />
 </layout>
