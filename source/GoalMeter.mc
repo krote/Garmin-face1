@@ -99,10 +99,34 @@ class GoalMeter extends WatchUi.Drawable {
 
     // return array of segment heights.
     function getSegments(){
+        var segmentScale = getSegmentScale();
 
+        var numSegments = mMaxValue * 1.0 / segmentScale;
+        var numSeparators = Math.ceil(numSegments) - 1;
+
+        var totalSegmentHeight = mHeight - (numSeparators * mSeparator);
+        var segmentHeight = totalSegmentHeight * 1.0 / numSegments;
+
+        var segments = new [Math.ceil(numSegments)];
+        var start, end, height;
+        for(var i = 0; i < segments.size(); ++i){
+            start = Math.round(i * segmentHeight);
+            end = Math.round((i+1) * segmentHeight);
+
+            if(end > totalSegmentHeight){
+                end = totalSegmentHeight;
+            }
+            height = end - start;
+            segments[i] = height.toNumber();
+        }
+        return segments;
     }
 
     function getFillHeight(segments as Array<Number>){
+
+    }
+
+    function getSegmentScale(){
 
     }
 }
