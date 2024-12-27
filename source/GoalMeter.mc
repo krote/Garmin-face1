@@ -146,7 +146,25 @@ class GoalMeter extends WatchUi.Drawable {
     }
 
     function getFillHeight(segments as Array<Number>){
+        var fillHeight;
+        var i;
+        var totalSegmentHeight = 0;
+        for(i=0; i < segments.size() ; ++i){
+            totalSegmentHeight += segments[i];
+        }
 
+        var remainingFillHeight = Math.floor((mCurrentValue * 1.0 / mMaxValue) * totalSegmentHeight).toNumber();
+        fillHeight = remainingFillHeight;
+
+        for(i=0; i < segments.size(); ++i){
+            remainingFillHeight -= segments[i];
+            if(remainingFillHeight > 0){
+                fillHeight += mSeparator;
+            }else{
+                break;
+            }
+        }
+        return fillHeight;
     }
 
 }
