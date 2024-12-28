@@ -11,6 +11,8 @@ const SCREEN_MULTIPLIER = (System.getDeviceSettings().screenWidth < 360) ? 1 : 2
 const BATTERY_HEAD_HEIGHT = 4 * SCREEN_MULTIPLIER;
 const BATTERY_MARGIN = SCREEN_MULTIPLIER;
 var gThemeColor;
+var gMeterBackgroundColor;
+
 // x, y are co-ordinates of center point.
 // widh and height are outer dimensions of battery "body".
 function drawBatteryMeter(dc, x, y, width, height){

@@ -29,6 +29,7 @@ class GoalMeter extends WatchUi.Drawable {
     private var mBufferNeedRedraw = true;
     private var mCurrentValue;
     private var mMaxValue;
+    private var mIsOff = false;
 
     typedef GoalMeterParams as {
         :side as Symbol,
@@ -167,4 +168,36 @@ class GoalMeter extends WatchUi.Drawable {
         return fillHeight;
     }
 
+    // Differennt draw algorithms have been tried:
+    (:unbuffered)
+    function draw(dc){
+        var meterStyle = Application.Properties.getValue("GoalMeterStyle");
+        if((meterStyle == 2 /* HIDDEN */) || mIsOff){
+            return;
+        }
+
+        var left = (mSide == :left) ? 0 : (dc.getWidth() - mWidth);
+        var top = (dc.getHeight() - mHeight) / 2;
+
+        //mBufferNeedRecreate; mBufferNeedRedraw;
+
+        drawSegments(dc, left, top, gThemeColor, mSegments, 0, mFillHeight);
+
+        if(meterStyle <= 1){
+            drawSegments(dc, left, top, gMeterBackgroundColor, mSegments, mFillHeight, mHeight);
+        }
+    }
+
+    function drawSegments(dc, x, y, fillColor, segmentsas as Array<Number>, startFillHeight, endFillHeight){
+        var segmentStart = 0;
+        var segmentEnd;
+        var fillStart, fillEnd, fillHeight;
+
+        y += mHeight; // start from bottom
+        dc.setColor(fillColor, Graphics.COLOR_TRANSPARENT);
+
+        for(var i = 0; i < segments.size(); ++i){
+            
+        }
+    }
 }
