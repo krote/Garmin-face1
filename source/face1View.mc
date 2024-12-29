@@ -7,11 +7,18 @@ import Toybox.WatchUi;
 using Toybox.Math;
 
 
+
 const SCREEN_MULTIPLIER = (System.getDeviceSettings().screenWidth < 360) ? 1 : 2;
 const BATTERY_HEAD_HEIGHT = 4 * SCREEN_MULTIPLIER;
 const BATTERY_MARGIN = SCREEN_MULTIPLIER;
 var gThemeColor;
+var gMonoDarkColor;
+var gMonoLightColor;
+var gBackgroundColor;
 var gMeterBackgroundColor;
+
+var gNormalFont;
+var gIconsFont;
 
 // x, y are co-ordinates of center point.
 // widh and height are outer dimensions of battery "body".
@@ -58,6 +65,7 @@ function drawBatteryMeter(dc, x, y, width, height){
 
 
 class face1View extends WatchUi.WatchFace {
+    private var mSettingChangedSinceLastDraw = true;
 
     function initialize() {
         WatchFace.initialize();
@@ -123,5 +131,71 @@ class face1View extends WatchUi.WatchFace {
     function onEnterSleep() as Void {
     }
 
+    function onSettingChanged(){
+        mSettingChangedSinceLastDraw = true;
+
+        updateNormalFont();
+        updateThemeColors();
+    }
+
+    function updateNormalFont(){
+        var city = Application.Properties.getValue("LocalTimeInCity");
+
+        //gNormalFont = WatchUi.loadResource(((city != null) && (city.length() > 0)) ?  Rez.Fonts.NormalFontCities : Rez.Fonts.NormalFont);
+    }
+
+    function updateThemeColors(){
+        var theme = Application.getApp().getIntProperty("Theme",0);
+        gThemeColor = [
+            Graphics.COLOR_BLUE,
+            Graphics.COLOR_PINK,
+            Graphics.COLOR_GREEN,
+            Graphics.COLOR_DK_GRAY,
+            0x55AAFF,
+            0xFFFFAA,
+            Graphics.COLOR_ORANGE,
+            Graphics.COLOR_RED,
+            Graphics.COLOR_WHITE,
+            Graphics.COLOR_DK_BLUE,
+            Graphics.COLOR_DK_GREEN,
+            Graphics.COLOR_DK_RED,
+            0xFFFF00,
+            Graphics.COLOR_ORANGE,
+            Graphics.COLOR_YELLOW
+        ][theme];
+
+        var lightFlags = [
+            false,
+            false,
+            false,
+            true,
+            false,
+            false,
+            false,
+            false,
+            false,
+            true,
+            true,
+            true,
+            false,
+            true,
+            false,
+        ];
+
+        var isFr45 = (System.getDeviceSettings().screenWidth == 208);
+        if(lightFlags[theme]){
+            gMonoLightColor = Graphics.COLOR_BLACK;
+            gMonoDarkColor = isFr45 ? Graphics.COLOR_BLACK : Graphics.COLOR_DK_GRAY;
+
+            gMeterBackgroundColor = isFr45 ? Graphics.COLOR_BLACK : Graphics.COLOR_LT_GRAY;
+            gBackgroundColor = Graphics.COLOR_WHITE;
+        }else{
+            gMonoLightColor = Graphics.COLOR_WHITE;
+            gMonoDarkColor = isFr45 ? Graphics.COLOR_WHITE : Graphics.COLOR_LT_GRAY;
+
+            gMeterBackgroundColor = isFr45 ? Graphics.COLOR_WHITE : Graphics.COLOR_DK_GRAY;
+            gBackgroundColor = Graphics.COLOR_BLACK;
+        }
+    }
 
 }

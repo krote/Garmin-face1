@@ -26,6 +26,16 @@ class face1App extends Application.AppBase {
         WatchUi.requestUpdate();
     }
 
+    function getIntProperty(key, defaultValue){
+        var value = Properties.getValue(key);
+        if(value == null){
+            value = defaultValue;
+        }else if(!(value instanceof Number)){
+            value = value.toNumber();
+        }
+        return value;
+    }
+
 }
 
 function getApp() as face1App {
