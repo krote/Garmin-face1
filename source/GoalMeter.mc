@@ -188,7 +188,7 @@ class GoalMeter extends WatchUi.Drawable {
         }
     }
 
-    function drawSegments(dc, x, y, fillColor, segmentsas as Array<Number>, startFillHeight, endFillHeight){
+    function drawSegments(dc, x, y, fillColor, segments as Array<Number>, startFillHeight, endFillHeight){
         var segmentStart = 0;
         var segmentEnd;
         var fillStart, fillEnd, fillHeight;
@@ -197,7 +197,30 @@ class GoalMeter extends WatchUi.Drawable {
         dc.setColor(fillColor, Graphics.COLOR_TRANSPARENT);
 
         for(var i = 0; i < segments.size(); ++i){
-            
+            segmentEnd = segmentStart + segments[i];
+
+            // Full segment is filled
+            if((segmentStart >= startFillHeight) && (segmentEnd <= endFillHeight)){
+                fillStart = segmentStart;
+                fillEnd = segmentEnd;
+
+            }else if(segmentStart >= startFillHeight) {// Bottom of this segment is filled
+                fillStart =  segmentStart;
+                fillEnd = endFillHeight;
+            }else if(segmentEnd <= endFillHeight){ // Top of this segment is filled
+                fillStart = startFillHeight;
+                fillEnd = segmentEnd;
+            }else { // Segment is not filled
+                fillStart = 0;
+                fillEnd = 0;
+            }
+
+            fillHeight = fillEnd - fillStart;
+            if(fillHeight){
+                dc.fillRectangle(x, y, -fillStart - fillHeight, mWidth, fillHeight);
+            }
+            segmentStart = segmentEnd + mSeparator;
+
         }
     }
 }
