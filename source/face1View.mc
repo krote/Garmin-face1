@@ -6,7 +6,7 @@ import Toybox.WatchUi;
 
 using Toybox.Math;
 
-
+const INTEGER_FORMAT = "%d";
 
 const SCREEN_MULTIPLIER = (System.getDeviceSettings().screenWidth < 360) ? 1 : 2;
 const BATTERY_HEAD_HEIGHT = 4 * SCREEN_MULTIPLIER;
@@ -16,6 +16,9 @@ var gMonoDarkColor;
 var gMonoLightColor;
 var gBackgroundColor;
 var gMeterBackgroundColor;
+
+var gHoursColor;
+var gMinutesColor;
 
 var gNormalFont;
 var gIconsFont;
@@ -62,10 +65,21 @@ function drawBatteryMeter(dc, x, y, width, height){
 
 }
 
+typedef GoalValues as {
+    :current as Number,
+    :max as Number,
+    @:isValid as Boolean
+};
 
 
 class face1View extends WatchUi.WatchFace {
     private var mSettingChangedSinceLastDraw = true;
+    private var mIsBurnInProtection = false;
+
+    private var mTime;
+    var mDataFields;
+
+    private var mDrawables as Dictionary<Symbol, Drawable> = {};
 
     function initialize() {
         WatchFace.initialize();
@@ -73,7 +87,32 @@ class face1View extends WatchUi.WatchFace {
 
     // Load your resources here
     function onLayout(dc as Dc) as Void {
+        gIconsFont = WatchUi.loadResource(Rez.Fonts.gIconsFont);
+
         setLayout(Rez.Layouts.WatchFace(dc));
+        cacheDrawables();
+    }
+
+    function cacheDrawables(){
+        mDrawables[:LeftGoalMeter] = View.findDrawableById("LeftGoalMeter");
+        mDrawables[:RightGoalMeter] = View.findDrawableById("RightGoalMeter");
+        mDrawables[:DataArea] = View.findDrawableById("DataArea");
+        mDrawables[:Indicators] = View.findDrawableById("Indicators");
+
+        mTime = View.findDrawableById("Time");
+
+        mDataFields = View.findDrawableById("DataFields");
+        mDrawables[:MoveBar] = View.findDrawableById("MoveBar");
+
+        setHideSeconds(Application.Properties.getValue("HideSeconds"));
+    }
+    
+    function setHideSeconds(hideSeconds){
+        if(mIsBurnInProtection || (mTime == null)){
+            return;
+        }
+        mTime.setHideSeconds(hideSeconds);
+        (mDrawables[:MoveBar] as MoveBar).setFullWidth(hideSeconds);
     }
 
     // Called when this View is brought to the foreground. Restore

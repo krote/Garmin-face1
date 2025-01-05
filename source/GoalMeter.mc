@@ -180,6 +180,9 @@ class GoalMeter extends WatchUi.Drawable {
         var top = (dc.getHeight() - mHeight) / 2;
 
         //mBufferNeedRecreate; mBufferNeedRedraw;
+        if(gThemeColor == null){
+            gThemeColor = Graphics.COLOR_BLACK;
+        }
 
         drawSegments(dc, left, top, gThemeColor, mSegments, 0, mFillHeight);
 
