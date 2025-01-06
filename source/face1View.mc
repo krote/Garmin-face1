@@ -87,7 +87,7 @@ class face1View extends WatchUi.WatchFace {
 
     // Load your resources here
     function onLayout(dc as Dc) as Void {
-        gIconsFont = WatchUi.loadResource(Rez.Fonts.gIconsFont);
+        gIconsFont = WatchUi.loadResource(Rez.Fonts.IconsFont);
 
         setLayout(Rez.Layouts.WatchFace(dc));
         cacheDrawables();
@@ -180,7 +180,7 @@ class face1View extends WatchUi.WatchFace {
     function updateNormalFont(){
         var city = Application.Properties.getValue("LocalTimeInCity");
 
-        //gNormalFont = WatchUi.loadResource(((city != null) && (city.length() > 0)) ?  Rez.Fonts.NormalFontCities : Rez.Fonts.NormalFont);
+        gNormalFont = WatchUi.loadResource(((city != null) && (city.length() > 0)) ?  Rez.Fonts.NormalFontCities : Rez.Fonts.NormalFont);
     }
 
     function updateThemeColors(){
