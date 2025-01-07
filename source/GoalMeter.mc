@@ -226,4 +226,53 @@ class GoalMeter extends WatchUi.Drawable {
 
         }
     }
+    (:buffered)
+    function draw(dc){
+        if((Application.Properties.getValue("GoalMeterStyle") == 2 /*HIDDEN*/) || mIsOff){
+            return;
+        }
+
+        var left = (mSide == :left) ? 0 : (dc.getWidth()-mWidth);
+        var top = (dc.getHeight() - mHeight) / 2;
+
+        var emptyBufferDc;
+        var filledBufferDc;
+
+        var clipBottom, clipTop, clipHeihgt;
+
+        var halfScreenDcWidth = (dc.getWidth() / 2);
+        var x, radius;
+
+        if(mBufferNeedRecreate){
+            mEmptyBuffer = createSegmentBuffer(gMeterBackgroundColor);
+            mFilledBuffer = createSegmentBuffer(gThemeColor);
+            mBufferNeedRecreate = false;
+            mBufferNeedRedraw = true;
+        }
+
+        if(mBufferNeedRedraw){
+            // clear both buffers with background color
+            emptyBufferDc = mEmptyBuffer.getDc();
+            emptyBufferDc.setColor(Graphics.COLOR_TRANSPARENT, gBackgroundColor);
+            emptyBufferDc.clear();
+            
+            filledBufferDc = mFilledBuffer.getDc();
+            filledBufferDc.setColor(Graphics.COLOR_TRANSPARENT, gBackgroundColor);
+            filledBufferDc.clear();
+        }
+    }
+
+    (:buffered)
+    function createSegmentBuffer(fillColor){
+        var options = {
+            :width => mWidth,
+            :height => mHeight,
+            :palette => [gBackgroundColor, fillColor]
+        };
+
+        if((Graphics has :createBufferdBitmap)){
+            return Graphics.createBufferedBitmap(options).get();
+        }
+        return new Graphics.BufferedBitmap(options);
+    }
 }
