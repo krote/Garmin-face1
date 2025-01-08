@@ -31,6 +31,9 @@ class GoalMeter extends WatchUi.Drawable {
     private var mMaxValue;
     private var mIsOff = false;
 
+    (:buffered) private var mFilledBuffer;
+    (:buffered) private var mEmptyBuffer;
+
     typedef GoalMeterParams as {
         :side as Symbol,
         :stroke as Number,
@@ -226,6 +229,7 @@ class GoalMeter extends WatchUi.Drawable {
 
         }
     }
+
     (:buffered)
     function draw(dc){
         if((Application.Properties.getValue("GoalMeterStyle") == 2 /*HIDDEN*/) || mIsOff){
@@ -238,7 +242,7 @@ class GoalMeter extends WatchUi.Drawable {
         var emptyBufferDc;
         var filledBufferDc;
 
-        var clipBottom, clipTop, clipHeihgt;
+        var clipBottom, clipTop, clipHeight;
 
         var halfScreenDcWidth = (dc.getWidth() / 2);
         var x, radius;
@@ -259,7 +263,51 @@ class GoalMeter extends WatchUi.Drawable {
             filledBufferDc = mFilledBuffer.getDc();
             filledBufferDc.setColor(Graphics.COLOR_TRANSPARENT, gBackgroundColor);
             filledBufferDc.clear();
+
+            // draw full fill height for each buffer
+            drawSegments(emptyBufferDc, 0, 0, gMeterBackgroundColor, mSegments, 0, mHeight);
+            // cloud avoid drawing filled segments buffer if style is not ALL_SEGMENTS or ALL_SEGMENTS_MERTGED
+            drawSegments(filledBufferDc, 0, 0, gThemeColor, mSegments, 0, mHeight);
+
+            // for arc meters, draw circular mask for each buffer.
+            if( System.getDeviceSettings().screenShape != System.SCREEN_SHAPE_RECTANGLE){
+                // beyond right edge of bufferDc : beyond left edge of bufferDc
+                x = (mSide == :left) ? halfScreenDcWidth : (mWidth - halfScreenDcWidth - 1);
+                radius = halfScreenDcWidth - mStroke;
+
+                emptyBufferDc.setColor(gBackgroundColor, Graphics.COLOR_TRANSPARENT);
+                emptyBufferDc.fillCircle(x, (mHeight / 2), radius);
+
+                filledBufferDc.setColor(gBackgroundColor, Graphics.COLOR_TRANSPARENT);
+                filledBufferDc.fillCircle(x, (mHeight / 2), radius);
+            }
+
+            mBufferNeedRedraw = false;
         }
+
+        //draw filled segments
+        clipBottom = dc.getHeight() - top;
+        clipTop = clipBottom - mFillHeight;
+        clipHeight = clipBottom - clipTop;
+
+        if(clipHeight > 0){
+            dc.setClip(left, clipTop, mWidth, clipHeight);
+            dc.drawBitmap(left, top, mFilledBuffer);
+        }
+
+        // draw unfilled segments
+        if( Application.Properties.getValue("GoalMeterStyle") <= 1){
+            clipBottom = clipTop;
+            clipTop = top;
+            clipHeight = clipBottom - clipTop;
+
+            if(clipHeight > 0){
+                dc.setClip(left, clipTop, mWidth, clipHeight);
+                dc.drawBitmap(left, top, mEmptyBuffer);
+            }
+        }
+
+        dc.clearClip();
     }
 
     (:buffered)
