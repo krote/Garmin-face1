@@ -187,6 +187,9 @@ class GoalMeter extends WatchUi.Drawable {
             gThemeColor = Graphics.COLOR_BLACK;
         }
 
+        if(mSegments == null){
+            mSegments = getSegments();
+        }
         drawSegments(dc, left, top, gThemeColor, mSegments, 0, mFillHeight);
 
         if(meterStyle <= 1){
