@@ -3,6 +3,8 @@ import Toybox.Lang;
 import Toybox.WatchUi;
 
 class face1App extends Application.AppBase {
+    var mView;
+    var mFieldTypes as Array<Number> = [0,0,0];
 
     function initialize() {
         AppBase.initialize();
@@ -17,12 +19,23 @@ class face1App extends Application.AppBase {
     }
 
     // Return the initial view of your application here
-    function getInitialView() as [Views] or [Views, InputDelegates] {
-        return [ new face1View() ];
+    function getInitialView() {
+        mView = new face1View();
+        onSettingsChanged();
+        return [mView];
+    }
+
+    function getView(){
+        return mView;
     }
 
     // New app settings have been received so trigger a UI update
-    function onSettingsChanged() as Void {
+    function onSettingsChanged() {
+        mFieldTypes[0] = getIntProperty("Field1Type", 0);
+        mFieldTypes[1] = getIntProperty("Field2Type", 1);
+        mFieldTypes[2] = getIntProperty("Field3Type", 2);
+
+        mView.onSettingChanged();
         WatchUi.requestUpdate();
     }
 
