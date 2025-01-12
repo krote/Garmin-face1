@@ -49,6 +49,12 @@ class face1App extends Application.AppBase {
         return value;
     }
 
+    function hasField(fieldType){
+        return ( (mFieldTypes[0] == fieldType) ||
+            (mFieldTypes[1] == fieldType) ||
+            (mFieldTypes[2] == fieldType));
+    }
+
 }
 
 function getApp() as face1App {
