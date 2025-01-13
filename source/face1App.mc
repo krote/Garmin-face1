@@ -2,6 +2,22 @@ import Toybox.Application;
 import Toybox.Lang;
 import Toybox.WatchUi;
 
+var gLocationLat = null;
+var gLocationLng = null;
+
+(:object_store)
+function getStorageValue(key as PropertyKeyType) as PropertyValueType {
+	return Application.getApp().getProperty(key);
+}
+(:object_store)
+function setStorageValue(key as PropertyKeyType, value as PropertyValueType) as Void {
+	Application.getApp().setProperty(key, value);
+}
+(:object_store)
+function deleteStorageValue(key as PropertyKeyType) as Void {
+	Application.getApp().deleteProperty(key);
+}
+
 class face1App extends Application.AppBase {
     var mView;
     var mFieldTypes as Array<Number> = [0,0,0];
@@ -55,6 +71,18 @@ class face1App extends Application.AppBase {
             (mFieldTypes[2] == fieldType));
     }
 
+    (:background_method)
+    function checkPendingWebRequests(){
+        var location = Activity.getActivityInfo().currentLocation;
+        if(location != null){
+            location = location.toDegrees();
+            gLocationLat = location[0].toFloat();
+            gLocationLng = location[1].toFloat();
+
+            setStorageValue("LastLocationLat", gLocationLat);
+            setStorageValue("LastLocationLng", gLocationLng);
+        }
+    }
 }
 
 function getApp() as face1App {
