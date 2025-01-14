@@ -2,6 +2,10 @@ import Toybox.Application;
 import Toybox.Lang;
 import Toybox.WatchUi;
 
+using Toybox.Background as Bg;
+
+typedef PendingWebRequests as Dictionary<String, Boolean>;
+
 var gLocationLat = null;
 var gLocationLng = null;
 
@@ -81,6 +85,39 @@ class face1App extends Application.AppBase {
 
             setStorageValue("LastLocationLat", gLocationLat);
             setStorageValue("LastLocationLng", gLocationLng);
+        }else{
+            var lat = getStorageValue("LastLocationLat");
+            if(lat != null){
+                gLocationLat = lat;
+            }
+            var lng = getStorageValue("LastLocationLng");
+            if(lng != null){
+                gLocationLng = lng;
+            }
+        }
+
+        if(!(System has :ServiceDelegate)){
+            return;
+        }
+
+        var pendingWebRequests = getStorageValue("PendingWebRequests") as PendingWebRequests?;
+        if(pendingWebRequests == null){
+            pendingWebRequests = {};
+        }
+
+        // 1.City local time. City has been specified
+        var city = Application.getApp().getProperty("LocalTimeInCity");
+
+        if((city != null) && (city.length() > 0)){
+            var cityLocalTime = getStorageValue("CityLocalTime") as CityLocalTimeResponse?;
+
+            if((cityLocalTime == null) ||
+            (((cityLocalTime as CityLocalTimeSuccessResponse)["next"] != null) && (Time.now().value() >= (cityLocalTime as CityLocalTimeSuccessResponse)["next"]["when"]))){
+                pendingWebRequests["CityLocalTime"] = true;
+            }else if(!cityLocalTime["requestCity"].equals(city)){
+                deleteStorageValue("CityLocalTime");
+                pendingWebRequests["CityLocalTime"] = true;
+            }
         }
     }
 }
