@@ -119,6 +119,20 @@ class face1App extends Application.AppBase {
                 pendingWebRequests["CityLocalTime"] = true;
             }
         }
+
+        if((gLocationLat != null) &&
+            (hasField(FIELD_TYPE_WEATHER) || hasField(FIELD_TYPE_HUMIDITY))){
+                var ownCurrent = getStorageValue("OpenWeatherMapCurrent") as OpenWeatherMapCurrentData?;
+
+                if(ownCurrent == null){
+                    pendingWebRequests["OpenWeatherCurrent"] = true;
+                }else if(ownCurrent["cod"] == 200){
+                    if((Time.now().value() > (ownCurrent["dt"] + 1800)) ||
+                        (((gLocationLat - ownCurrent["lat"]).abs() > 0.02) || ((gLocationLat - ownCurrent["lon"]).abs() > 0.02))){
+                            pendingWebRequests["OpenWeatherCurrent"] = true;
+                    }
+                }
+            }
     }
 }
 
