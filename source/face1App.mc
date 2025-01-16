@@ -122,17 +122,28 @@ class face1App extends Application.AppBase {
 
         if((gLocationLat != null) &&
             (hasField(FIELD_TYPE_WEATHER) || hasField(FIELD_TYPE_HUMIDITY))){
-                var ownCurrent = getStorageValue("OpenWeatherMapCurrent") as OpenWeatherMapCurrentData?;
+            var ownCurrent = getStorageValue("OpenWeatherMapCurrent") as OpenWeatherMapCurrentData?;
 
-                if(ownCurrent == null){
-                    pendingWebRequests["OpenWeatherCurrent"] = true;
-                }else if(ownCurrent["cod"] == 200){
-                    if((Time.now().value() > (ownCurrent["dt"] + 1800)) ||
-                        (((gLocationLat - ownCurrent["lat"]).abs() > 0.02) || ((gLocationLat - ownCurrent["lon"]).abs() > 0.02))){
-                            pendingWebRequests["OpenWeatherCurrent"] = true;
-                    }
+            if(ownCurrent == null){
+                pendingWebRequests["OpenWeatherCurrent"] = true;
+            }else if(ownCurrent["cod"] == 200){
+                if((Time.now().value() > (ownCurrent["dt"] + 1800)) ||
+                    (((gLocationLat - ownCurrent["lat"]).abs() > 0.02) || ((gLocationLat - ownCurrent["lon"]).abs() > 0.02))){
+                        pendingWebRequests["OpenWeatherCurrent"] = true;
                 }
             }
+        }
+
+        if(pendingWebRequests.keys().size() > 0){
+            var lastTime = Bg.getLastTemporalEventTime();
+            if(lastTime != null){
+                var nextTime = lastTime.add(new Time.Duration(5*60));
+                Bg.registerForTemporalEvent(nextTime);
+            }else{
+                Bg.registerForTemporalEvent(Time.now());
+            }
+        }
+        setStorageValue("PendingWebRequests", pendingWebRequests);
     }
 }
 
