@@ -88,3 +88,42 @@ typedef OpenWeatherMapCurrentData as {
     "icon" as String
 };
 
+(:background)
+class BackgroundService extends Sys.ServiceDelegate {
+    (:background_method)
+    function initialize(){
+        System.ServiceDelegate.initialize();
+    }
+
+    (:background_method)
+    function onTemporalEvent(){
+        var pendingWebRequests = getStorageValue("PendingWebRequests") as PendingWebRequests?;
+        if(pendingWebRequests != null){
+            // 1. City local time
+            if(pendingWebRequests["CityLocalTime"] != null){
+                makeWebRequest(
+                    "", 
+                    {
+                        "city" => getApp().Properties.getValue("LocalTimeInCity")
+                    }, 
+                    method(:onReceiveCityLocalTime)
+                );
+            }else if(pendingWebRequests["OpenWeatherMapCurrent"] != null){
+                var owmKeyOverride = getApp().Properties.getValue("OWMKeyOverride");
+                makeWebRequest(
+                    url, 
+                    {
+                        "lat" => getStorageValue("LastLocationLat"),
+                        "lng" => getStorageValue("LastLocationLng"),
+                        "appid" => ((owmKeyOverride != null) && (owmKeyOverride.length() == 0)) ? 
+                    }, options, responseCallback
+                );
+            }
+        }
+    }
+
+    (:background_method)
+    function onReceiveCityLocalTime(responseCode as Number, data as CityLocalTimeResponse?){
+
+    }
+}
