@@ -5,6 +5,10 @@ using Toybox.Application as App;
 
 import Toybox.Lang;
 
+typedef HttpErrorData as {
+	"httpError" as Number
+};
+
 typedef CityLocalTimeSuccessResponse as {
     "requestCity" as String,
     "city" as String,
@@ -104,19 +108,21 @@ class BackgroundService extends Sys.ServiceDelegate {
                 makeWebRequest(
                     "", 
                     {
-                        "city" => getApp().Properties.getValue("LocalTimeInCity")
+                        "city" => Application.Properties.getValue("LocalTimeInCity")
                     }, 
                     method(:onReceiveCityLocalTime)
                 );
             }else if(pendingWebRequests["OpenWeatherMapCurrent"] != null){
-                var owmKeyOverride = getApp().Properties.getValue("OWMKeyOverride");
+                var owmKeyOverride = Application.Properties.getValue("OWMKeyOverride");
                 makeWebRequest(
-                    url, 
+                    "https://api.openweathermap.org/data/2.5/weather", 
                     {
                         "lat" => getStorageValue("LastLocationLat"),
                         "lng" => getStorageValue("LastLocationLng"),
-                        "appid" => ((owmKeyOverride != null) && (owmKeyOverride.length() == 0)) ? 
-                    }, options, responseCallback
+                        "appid" => ((owmKeyOverride != null) && (owmKeyOverride.length() == 0)) ? "2651f49cb20de925fc57590709b86ce6" : owmKeyOverride,
+                        "units" => "metric"
+                    },
+                    method(:onReceiveOpenWeatherMapCurrent)
                 );
             }
         }
@@ -124,6 +130,52 @@ class BackgroundService extends Sys.ServiceDelegate {
 
     (:background_method)
     function onReceiveCityLocalTime(responseCode as Number, data as CityLocalTimeResponse?){
+        if(responseCode != 200){
+            data = {
+                "httpError" => responseCode
+            };
+        }
 
+        Bg.exit({
+            "CityLocalTime" => data as CityLocalTimeData or HttpErrorData
+        });
+    }
+
+    (:background_method)
+    function onReceiveOpenWeatherMapCurrent(responseCode as Number, data as OpenWeatherMapCurrentResponse?){
+        var result;
+
+        if(responseCode == 200){
+            data = (data as OpenWeatherMapCurrentSuccessResponse);
+            result = {
+                "cod" => data["cod"],
+                "lat" => data["coord"]["lat"],
+                "lon" => data["coord"]["lon"],
+                "dt" => data["dt"],
+                "temp" => data["main"]["temp"],
+                "humidity" => data["main"]["humidity"],
+                "icon" => data["weather"][0]["icon"]
+            };
+        } else {
+            result = {
+                "httpError" => responseCode
+            };
+        }
+
+        Bg.exit({
+            "OpenWeatherMapCurrent" => result as OpenWeatherMapCurrentData or HttpErrorData
+        });
+    }
+
+    (:background_method)
+    function makeWebRequest(url, params, callback){
+        var options = {
+            :method => Comms.HTTP_REQUEST_METHOD_GET,
+            :headers => {
+                "Content-Type" => Communications.REQUEST_CONTENT_TYPE_URL_ENCODED},
+            :responseType => Comms.HTTP_RESPONSE_CONTENT_TYPE_JSON
+        };
+
+        Comms.makeWebRequest(url, params, options, callback);
     }
 }
