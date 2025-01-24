@@ -32,3 +32,25 @@ enum /* FIELD_TYPES */ {
 	FIELD_TYPE_PRESSURE,
 	FIELD_TYPE_HUMIDITY
 }
+
+class DataFields extends Ui.Drawable{
+	typedef DataFieldsParams as {
+		:left as Number,
+		:right as Number,
+		:top as Number,
+		:bottom as Number,
+		:batteryWidth as Number
+	};
+
+	private var mLeft, mRight, mTop, mBottom, mBatteryWidth;
+
+	function initialize(params as DataFieldsParams){
+		Drawable.initialize(parms);
+
+		mLeft = params[:left];
+		mRight = params[:right];
+		mTop = params[:top];
+		mBottom = params[:bottom];
+		mBatteryWidth = params[:batteryWidth];
+	}
+}
