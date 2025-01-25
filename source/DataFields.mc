@@ -43,14 +43,34 @@ class DataFields extends Ui.Drawable{
 	};
 
 	private var mLeft, mRight, mTop, mBottom, mBatteryWidth;
+	private var mFieldCount;
+	private var mHasLiveHR = false;
+	private var mWWasHRAvailabel = false;
+	private var mMaxFieldLength;
+	private var mWeatherIconsFont = null;
+	private var mWeatherIconsSubset = null;
+	
 
 	function initialize(params as DataFieldsParams){
-		Drawable.initialize(parms);
+		Drawable.initialize(params);
 
 		mLeft = params[:left];
 		mRight = params[:right];
 		mTop = params[:top];
 		mBottom = params[:bottom];
 		mBatteryWidth = params[:batteryWidth];
+
+		onSettingChanged();
+	}
+
+	function onSettingChanged(){
+		mFieldCount = App.getApp().getIntProperty("FieldCount", 3);
+		mMaxFieldLength = [0, 8, 6, 4][mFieldCount];
+		mHasLiveHR  = App.getApp().hasField(FIELD_TYPE_HR_LIVE_5S);
+
+		if(!App.getApp().hasField(FIELD_TYPE_WEATHER)){
+			mWeatherIconsFont = null;
+			mWeatherIconsSubset = null;
+		}
 	}
 }

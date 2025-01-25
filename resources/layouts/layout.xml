@@ -13,11 +13,11 @@
         <param name="separator">2</param>
     </drawable>
     <drawable id="DataFields" class="DataFields">
-        <param name="left">80<param>
-        <param name="right">160<param>
-        <param name="top">24<param>
-        <param name="bottom">45<param>
-        <param name="batteryWidth">28<param>
+        <param name="left">80</param>
+        <param name="right">160</param>
+        <param name="top">24</param>
+        <param name="bottom">45</param>
+        <param name="batteryWidth">28</param>
     </drawable>
     <label id="TimeLabel" x="center" y="center" font="Graphics.FONT_LARGE" justification="Graphics.TEXT_JUSTIFY_CENTER" color="Graphics.COLOR_BLUE" />
     <label id="AmPmLabel" x="50%" y="60%" font="Graphics.FONT_LARGE" justification="Graphics.TEXT_JUSTIFY_CENTER" color="Graphics.COLOR_BLUE" />
