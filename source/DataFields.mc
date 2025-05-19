@@ -45,7 +45,7 @@ class DataFields extends Ui.Drawable{
 	private var mLeft, mRight, mTop, mBottom, mBatteryWidth;
 	private var mFieldCount;
 	private var mHasLiveHR = false;
-	private var mWWasHRAvailabel = false;
+	private var mWasHRAvailable = false;
 	private var mMaxFieldLength;
 	private var mWeatherIconsFont = null;
 	private var mWeatherIconsSubset = null;
@@ -72,5 +72,10 @@ class DataFields extends Ui.Drawable{
 			mWeatherIconsFont = null;
 			mWeatherIconsSubset = null;
 		}
+	}
+	
+	function draw(dc as Gfx.Dc) as Void {
+		// Required implementation of draw method since this class extends Drawable
+		// Will be implemented with actual drawing logic
 	}
 }

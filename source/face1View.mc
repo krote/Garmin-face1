@@ -104,7 +104,15 @@ class face1View extends WatchUi.WatchFace {
         mDataFields = View.findDrawableById("DataFields");
         mDrawables[:MoveBar] = View.findDrawableById("MoveBar");
 
-        setHideSeconds(Application.Properties.getValue("HideSeconds"));
+        // Use getProperty with default value to avoid exception if property doesn't exist
+        var hideSeconds = false;
+        try {
+            hideSeconds = Application.Properties.getValue("HideSeconds");
+        } catch (e) {
+            // Use default if property doesn't exist
+            Application.Properties.setValue("HideSeconds", hideSeconds);
+        }
+        setHideSeconds(hideSeconds);
     }
     
     function setHideSeconds(hideSeconds){
@@ -136,7 +144,14 @@ class face1View extends WatchUi.WatchFace {
                 amPmString = "AM";
             }
         } else {
-            if (Application.Properties.getValue("UseMilitaryFormat")) {
+            var useMilitaryFormat = false;
+            try {
+                useMilitaryFormat = Application.Properties.getValue("UseMilitaryFormat");
+            } catch (e) {
+                Application.Properties.setValue("UseMilitaryFormat", useMilitaryFormat);
+            }
+            
+            if (useMilitaryFormat) {
                 timeFormat = "$1$$2$";
                 hours = hours.format("%02d");
             }
@@ -144,12 +159,20 @@ class face1View extends WatchUi.WatchFace {
         var timeString = Lang.format(timeFormat, [hours, clockTime.min.format("%02d")]);
 
         // Update the view
+        // Get foreground color with error handling
+        var foregroundColor = Graphics.COLOR_WHITE; // Default color
+        try {
+            foregroundColor = Application.Properties.getValue("ForegroundColor") as Number;
+        } catch (e) {
+            Application.Properties.setValue("ForegroundColor", foregroundColor);
+        }
+        
         var view = View.findDrawableById("TimeLabel") as Text;
-        view.setColor(Application.Properties.getValue("ForegroundColor") as Number);
+        view.setColor(foregroundColor);
         view.setText(timeString);
 
         var amPmLabel = View.findDrawableById("AmPmLabel") as Text;
-        amPmLabel.setColor(Application.Properties.getValue("ForegroundColor") as Number);
+        amPmLabel.setColor(foregroundColor);
         amPmLabel.setText(amPmString);
 
         // Call the parent onUpdate function to redraw the layout
@@ -178,7 +201,17 @@ class face1View extends WatchUi.WatchFace {
     }
 
     function updateNormalFont(){
-        var city = Application.Properties.getValue("LocalTimeInCity");
+        var city = "";
+        try {
+            city = Application.Properties.getValue("LocalTimeInCity");
+            if (city == null) {
+                city = "";
+                Application.Properties.setValue("LocalTimeInCity", city);
+            }
+        } catch (e) {
+            // If property doesn't exist, create it with empty string
+            Application.Properties.setValue("LocalTimeInCity", city);
+        }
 
         gNormalFont = WatchUi.loadResource(((city != null) && (city.length() > 0)) ?  Rez.Fonts.NormalFontCities : Rez.Fonts.NormalFont);
     }

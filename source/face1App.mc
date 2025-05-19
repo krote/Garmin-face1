@@ -1,6 +1,7 @@
 import Toybox.Application;
 import Toybox.Lang;
 import Toybox.WatchUi;
+import Toybox.Application.Properties;
 
 using Toybox.Background as Bg;
 
@@ -51,16 +52,44 @@ class face1App extends Application.AppBase {
 
     // New app settings have been received so trigger a UI update
     function onSettingsChanged() {
-        mFieldTypes[0] = getIntProperty("Field1Type", 0);
-        mFieldTypes[1] = getIntProperty("Field2Type", 1);
-        mFieldTypes[2] = getIntProperty("Field3Type", 2);
+        // Use try/catch for each property in case they don't exist
+        try {
+            mFieldTypes[0] = getIntProperty("Field1Type", 0);
+        } catch (e) {
+            mFieldTypes[0] = 0;
+            Properties.setValue("Field1Type", 0);
+        }
+        
+        try {
+            mFieldTypes[1] = getIntProperty("Field2Type", 1);
+        } catch (e) {
+            mFieldTypes[1] = 1;
+            Properties.setValue("Field2Type", 1);
+        }
+        
+        try {
+            mFieldTypes[2] = getIntProperty("Field3Type", 2);
+        } catch (e) {
+            mFieldTypes[2] = 2;
+            Properties.setValue("Field3Type", 2);
+        }
 
         mView.onSettingChanged();
         WatchUi.requestUpdate();
     }
 
     function getIntProperty(key, defaultValue){
-        var value = Properties.getValue(key);
+        var value = null;
+        try {
+            value = Properties.getValue(key);
+        } catch (e) {
+            // Key does not exist, use default value
+            value = defaultValue;
+            // Create property if it doesn't exist
+            Properties.setValue(key, defaultValue);
+            return value;
+        }
+        
         if(value == null){
             value = defaultValue;
         }else if(!(value instanceof Number)){
