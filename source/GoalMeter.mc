@@ -136,6 +136,11 @@ class GoalMeter extends WatchUi.Drawable {
 
         var SEGMENT_SCALES = [1, 10, 100, 1000, 10000];
 
+        // Check if mMaxValue is null or zero to avoid division by zero
+        if (mMaxValue == null || mMaxValue == 0) {
+            return SEGMENT_SCALES[0]; // Return default scale
+        }
+
         do{
             segmentScale = SEGMENT_SCALES[tryScaleIndex];
 
@@ -145,6 +150,10 @@ class GoalMeter extends WatchUi.Drawable {
             segmentHeight = Math.floor(totalSegmentHeight / numSegments);
 
             tryScaleIndex++;
+            // Prevent infinite loop if we reach the end of SEGMENT_SCALES
+            if (tryScaleIndex >= SEGMENT_SCALES.size()) {
+                break;
+            }
         }while(segmentHeight <= /* MIN_WHOLE_SEGMENT_HEIGHT */ 5);
         return segmentScale;
     }
