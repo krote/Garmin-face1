@@ -1,133 +1,132 @@
-# face1 Watch Face
+# face1 ウォッチフェイス
 
-A highly customizable watch face for Garmin devices, designed to provide a wealth of information at a glance.
+Garminデバイス向けの高度にカスタマイズ可能なウォッチフェイスで、一目で多くの情報を提供できるように設計されています。
 
-## Features
+## 特徴
 
-*   **Time Display:**
-    *   Current time with hours and minutes.
-    *   Optional AM/PM indicator.
-    *   Support for 12-hour and 24-hour (military) time formats. The 24-hour format includes a leading zero for hours (e.g., 08:00).
-    *   Option to hide the seconds display (to save battery or for a cleaner look, especially on always-on displays).
-*   **Battery Meter:**
-    *   Customizable battery gauge.
-    *   Battery level percentage display (can be hidden).
-    *   Low battery level indication (e.g., the gauge or percentage text changes color to red or yellow).
-*   **Data Fields:**
-    *   Up to three configurable data fields to display various metrics.
-*   **Goal Meters:**
-    *   Two configurable goal meters (typically positioned on the left and right sides of the screen).
-    *   Visually track progress towards daily goals.
-*   **Weather Information:**
-    *   Current weather conditions (requires location permission; uses OpenWeatherMap data, typically fetched via Garmin's services).
-    *   Temperature display.
-    *   Humidity display.
-*   **Local City Time:**
-    *   Display current time for a user-specified city.
-*   **Customization:**
-    *   Multiple color themes.
-    *   Customizable background and foreground colors.
-    *   Configurable styles for goal meters.
-*   **Activity Tracking:**
-    *   Displays data such as steps, distance, calories burned, floors climbed, and active minutes.
-*   **Health Monitoring:**
-    *   Heart rate display (current and optionally a live 5-second average).
-*   **Other Information:**
-    *   Sunrise and sunset times (requires location permission).
-    *   Notification count.
-    *   Alarms count.
-    *   Altitude.
-    *   Atmospheric pressure.
-*   **Language Support:**
-    *   Currently, the primary user interface is in English.
-    *   The watch face includes a Japanese language declaration in its manifest and necessary CJK fonts, indicating planned support for Japanese and potentially other East Asian languages.
-*   **Burn-in Protection:** For compatible display technologies (e.g., AMOLED), elements may shift periodically.
+*   **時刻表示:**
+    *   時と分による現在時刻。
+    *   オプションのAM/PMインジケータ。
+    *   12時間形式、24時間形式（ミリタリータイム）をサポート。24時間形式では、時間に先行ゼロが含まれます（例: 08:00）。
+    *   秒表示を非表示にするオプション（バッテリー節約のため、または常時表示ディスプレイでの見た目をすっきりさせるため）。
+*   **バッテリーメーター:**
+    *   カスタマイズ可能なバッテリーゲージ。
+    *   バッテリー残量パーセンテージ表示（非表示可能）。
+    *   低バッテリー残量表示（ゲージまたはパーセンテージテキストの色が赤または黄色に変わるなど）。
+*   **データフィールド:**
+    *   さまざまな指標を表示するための最大3つの設定可能なデータフィールド。
+*   **ゴールメーター:**
+    *   2つの設定可能なゴールメーター（通常、画面の左右に配置）。
+    *   日々の目標達成度を視覚的に追跡。
+*   **天気情報:**
+    *   現在の天気状況（位置情報の許可が必要。OpenWeatherMapのデータを使用し、通常Garminのサービス経由で取得）。
+    *   気温表示。
+    *   湿度表示。
+*   **ローカル都市時刻:**
+    *   ユーザー指定都市の現在時刻を表示。
+*   **カスタマイズ:**
+    *   複数のカラーテーマ。
+    *   カスタマイズ可能な背景色と前景色。
+    *   ゴールメーターのスタイルを設定可能。
+*   **アクティビティ追跡:**
+    *   歩数、距離、消費カロリー、上昇階数、週間運動量などのデータを表示。
+*   **健康モニタリング:**
+    *   心拍数表示（現在値およびオプションでリアルタイムの5秒平均値）。
+*   **その他の情報:**
+    *   日の出・日の入り時刻（位置情報の許可が必要）。
+    *   通知数。
+    *   アラーム数。
+    *   高度。
+    *   気圧。
+*   **言語サポート:**
+    *   現在、主要なユーザーインターフェースは英語です。
+    *   ウォッチフェイスのマニフェストには日本語の言語宣言が含まれており、必要なCJKフォントも同梱されているため、日本語およびその他東アジア言語のサポートが計画されています。
+*   **焼き付き防止:** 対応するディスプレイ技術（AMOLEDなど）の場合、要素が定期的に移動することがあります。
 
-## Supported Devices
+## 対応デバイス
 
 *   Garmin Forerunner 265 (fr265)
-*   *(Other devices might be compatible but are not explicitly listed in the manifest. Check the Connect IQ store listing for the most up-to-date compatibility.)*
+*   *（他のデバイスも互換性がある可能性がありますが、マニフェストには明示的に記載されていません。最新の互換性については、Connect IQストアのリストを確認してください。）*
 
-## Customization
+## カスタマイズ
 
-You can customize the "face1" watch face through the Garmin Connect IQ app on your smartphone.
+スマートフォンのGarmin Connect IQアプリを通じて、「face1」ウォッチフェイスをカスタマイズできます。
 
-Available settings typically include:
+通常、利用可能な設定は次のとおりです:
 
-*   **Theme:** Choose from several pre-defined color themes.
-*   **Background Color:** Select from options like Black, Dark Gray, Light Gray, or White.
-*   **Foreground Color:** Select from options like Black, Blue, Red, or White for primary text elements.
-*   **Time Format:**
-    *   **Force Military Format (24h with leading zero):** Toggle to ensure the time is displayed in 24-hour format with a leading zero (e.g., 08:00), potentially overriding the general device setting for time display. (Note: 12/24 hour format is often primarily governed by general device settings; this option fine-tunes the 24h display).
-*   **Hide Seconds:** Toggle to show or hide the seconds display.
-*   **Data Fields (up to 3):** Choose what information to display in each field:
-    *   Sunrise/Sunset Time
-    *   Heart Rate (Current)
-    *   Heart Rate (Live 5s average)
-    *   Battery Level (Percentage)
-    *   Battery Level (Icon only, hiding percentage)
-    *   Notification Count
-    *   Calories Burned
-    *   Distance Covered
-    *   Alarm Count
-    *   Current Altitude
-    *   Temperature (from weather)
-    *   Weather Conditions (Text or Icon)
-    *   Atmospheric Pressure
-    *   Humidity (from weather)
-*   **Goal Meters (Left and Right):**
-    *   **Data Types:**
-        *   Steps
-        *   Floors Climbed
-        *   Active Minutes
-        *   Calories
-        *   Battery
-        *   Off (hide meter)
-    *   **Style:** Configure the appearance of the goal meters (e.g., segmented, continuous fill).
-*   **Local Time in City:** Specify a city to display its local time.
+*   **テーマ:** 事前定義された複数のカラーテーマから選択。
+*   **背景色:** ブラック、ダークグレー、ライトグレー、ホワイトなどのオプションから選択。
+*   **前景色:** 主要なテキスト要素用にブラック、ブルー、レッド、ホワイトなどのオプションから選択。
+*   **時刻形式:**
+    *   **ミリタリー形式を強制（先行ゼロ付き24時間形式）:** 時刻を先行ゼロ付きの24時間形式（例: 08:00）で表示するように切り替え。これはデバイスの一般的な時刻表示設定を上書きする可能性があります。（注: 12/24時間形式は主にデバイスの一般設定によって制御されます。このオプションは24時間表示を微調整します。）
+*   **秒を非表示:** 秒表示の表示/非表示を切り替え。
+*   **データフィールド（最大3つ）:** 各フィールドに表示する情報を選択:
+    *   日の出/日の入り時刻
+    *   心拍数（現在）
+    *   心拍数（リアルタイム5秒平均）
+    *   バッテリー残量（パーセンテージ）
+    *   バッテリー残量（アイコンのみ、パーセンテージ非表示）
+    *   通知数
+    *   消費カロリー
+    *   移動距離
+    *   アラーム数
+    *   現在高度
+    *   気温（天気情報より）
+    *   天気状況（テキストまたはアイコン）
+    *   気圧
+    *   湿度（天気情報より）
+*   **ゴールメーター（左と右）:**
+    *   **データタイプ:**
+        *   歩数
+        *   上昇階数
+        *   週間運動量
+        *   カロリー
+        *   バッテリー
+        *   オフ（メーター非表示）
+    *   **スタイル:** ゴールメーターの外観を設定（例: セグメント化、連続塗りつぶし）。
+*   **都市のローカル時刻:** ローカル時刻を表示する都市を指定。
 
-## Weather and Location Features
+## 天気と位置情報機能
 
-*   "face1" can display current weather conditions, temperature, and humidity, typically provided by OpenWeatherMap via Garmin's weather services.
-*   To use weather features and display sunrise/sunset times, you need to grant location (GPS) permission to the watch face via your Garmin device settings.
-*   The watch face will periodically attempt to update weather data when it has a valid GPS location.
-*   You can also set a specific city in the settings to display its local time; this is independent of the location used for weather data.
+*   「face1」は、現在の天気状況、気温、湿度を表示できます。これらは通常、Garminの天気サービスを介してOpenWeatherMapによって提供されます。
+*   天気機能を使用し、日の出/日の入り時刻を表示するには、Garminデバイスの設定を介してウォッチフェイスに位置情報（GPS）の許可を与える必要があります。
+*   ウォッチフェイスは、有効なGPS位置情報がある場合、定期的に天気データを更新しようとします。
+*   また、設定で特定の都市を設定してそのローカル時刻を表示することもできます。これは天気データに使用される位置情報とは独立しています。
 
-## Language Support
+## 言語サポート
 
-*   The user interface is currently available in **English**.
-*   The application manifest declares support for **Japanese (`jpn`)** and includes various CJK (Chinese, Japanese, Korean) fonts. This indicates an intention to support these languages in the future, though Japanese (or other CJK) translations for UI elements might not yet be present in the current string resources.
+*   ユーザーインターフェースは現在**英語**で利用可能です。
+*   アプリケーションマニフェストは**日本語（`jpn`）**のサポートを宣言しており、さまざまなCJK（中国語、日本語、韓国語）フォントが含まれています。これは将来的にこれらの言語をサポートする意図を示していますが、UI要素の日本語（または他のCJK）翻訳は現在の文字列リソースにはまだ存在しない可能性があります。
 
-## Installation
+## インストール
 
-1.  Open the Garmin Connect IQ Store app on your smartphone.
-2.  Search for "face1" (or the name it's published under).
-3.  Select the watch face and tap "Download" or "Install".
-4.  Sync your Garmin device with the Garmin Connect app.
-5.  Once installed, you can select "face1" from the list of available watch faces on your device (usually by a long press on the current watch face, then navigating to find "face1").
-6.  Customization is done via the Connect IQ app: find "face1" in your list of installed items, then go to its "Settings".
+1.  スマートフォンのGarmin Connect IQストアアプリを開きます。
+2.  「face1」（または公開されている名前）を検索します。
+3.  ウォッチフェイスを選択し、「ダウンロード」または「インストール」をタップします。
+4.  GarminデバイスをGarmin Connectアプリと同期します。
+5.  インストール後、デバイス上の利用可能なウォッチフェイスのリストから「face1」を選択できます（通常、現在のウォッチフェイスを長押しし、「face1」を見つけてナビゲートします）。
+6.  カスタマイズはConnect IQアプリを介して行います。「face1」をインストール済みアイテムのリストで見つけ、その「設定」に移動します。
 
-## Screenshots
+## スクリーンショット
 
-*(It is highly recommended to add screenshots of the watch face in action here. These can be uploaded to the Connect IQ store page and/or embedded in this README if hosted on a platform like GitHub.)*
+*（ウォッチフェイスが動作しているスクリーンショットをここに追加することを強くお勧めします。これらはConnect IQストアページにアップロードしたり、GitHubのようなプラットフォームでホストされている場合はこのREADMEに埋め込んだりすることができます。）*
 
-## Building from Source (for Developers)
+## ソースからのビルド（開発者向け）
 
-This project uses Garmin's Monkey C SDK.
-1.  Ensure you have the Garmin Connect IQ SDK installed and configured. Refer to the official Garmin documentation.
-2.  Clone this repository (if applicable) or download the source code.
-3.  Open the project in an IDE like Visual Studio Code with Garmin's "Monkey C" extension, or use Eclipse with the Garmin plugin.
-4.  The main build configuration file is `monkey.jungle`.
-5.  The application definition file is `manifest.xml`.
-6.  Use the IDE commands (e.g., "Monkey C: Build Project" in VS Code) or the command-line compiler (`monkeyc`) to compile the project.
-7.  Use the IDE commands (e.g., "Monkey C: Run App in Simulator" or "Monkey C: Build for Device & Sideload") or command-line tools (`monkeydo`) to deploy to a simulator or a connected device.
+このプロジェクトはGarminのMonkey C SDKを使用しています。
+1.  Garmin Connect IQ SDKがインストールされ、設定されていることを確認してください。Garminの公式ドキュメントを参照してください。
+2.  このリポジトリをクローンする（該当する場合）か、ソースコードをダウンロードします。
+3.  Garminの「Monkey C」拡張機能を持つVisual Studio CodeのようなIDE、またはGarminプラグインを持つEclipseでプロジェクトを開きます。
+4.  メインのビルド設定ファイルは`monkey.jungle`です。
+5.  アプリケーション定義ファイルは`manifest.xml`です。
+6.  IDEのコマンド（VS Codeの「Monkey C: Build Project」など）またはコマンドラインコンパイラ（`monkeyc`）を使用してプロジェクトをコンパイルします。
+7.  IDEのコマンド（VS Codeの「Monkey C: Run App in Simulator」や「Monkey C: Build for Device & Sideload」など）またはコマンドラインツール（`monkeydo`）を使用して、シミュレータまたは接続されたデバイスにデプロイします。
 
-## Contributing
+## 貢献
 
-*(If you wish to accept contributions, outline the process here. For example:
-"Contributions are welcome! Please fork the repository, create a new feature branch, make your changes, and then submit a pull request for review.")*
+*（貢献を受け付けたい場合は、ここでそのプロセスを概説してください。例:
+「貢献を歓迎します！リポジトリをフォークし、新しい機能ブランチを作成し、変更を加え、レビューのためにプルリクエストを送信してください。」）*
 
-## License
+## ライセンス
 
-*(Specify the license under which this project is released, e.g., MIT, Apache 2.0, GPL. If no license file is present in the repository, consider adding one. Example: "This project is licensed under the MIT License - see the LICENSE.md file for details.")*
-```
+*（このプロジェクトがリリースされているライセンスを指定してください。例: MIT、Apache 2.0、GPL。リポジトリにライセンスファイルが存在しない場合は、追加することを検討してください。例: 「このプロジェクトはMITライセンスの下でライセンスされています - 詳細についてはLICENSE.mdファイルを参照してください。」）*
