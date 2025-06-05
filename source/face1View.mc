@@ -3,6 +3,7 @@ import Toybox.Graphics;
 import Toybox.Lang;
 import Toybox.System;
 import Toybox.WatchUi;
+import Toybox.Activity;
 
 using Toybox.Math;
 
@@ -131,6 +132,11 @@ class face1View extends WatchUi.WatchFace {
 
     // Update the view
     function onUpdate(dc as Dc) as Void {
+        if(mSettingChangedSinceLastDraw){
+            onSettingChanged();
+            mSettingChangedSinceLastDraw = false;
+        }
+        
         // Get the current time and format it correctly
         var timeFormat = "$1$:$2$";
         var clockTime = System.getClockTime();
@@ -175,6 +181,9 @@ class face1View extends WatchUi.WatchFace {
         amPmLabel.setColor(foregroundColor);
         amPmLabel.setText(amPmString);
 
+        // Update goal meters
+        updateGoalMeters();
+        
         // Call the parent onUpdate function to redraw the layout
         View.onUpdate(dc);
     }
@@ -198,6 +207,14 @@ class face1View extends WatchUi.WatchFace {
 
         updateNormalFont();
         updateThemeColors();
+        
+        // Update goal meter settings
+        if (mDrawables[:LeftGoalMeter] != null) {
+            (mDrawables[:LeftGoalMeter] as GoalMeter).onSettingsChanged();
+        }
+        if (mDrawables[:RightGoalMeter] != null) {
+            (mDrawables[:RightGoalMeter] as GoalMeter).onSettingsChanged();
+        }
     }
 
     function updateNormalFont(){
@@ -214,6 +231,23 @@ class face1View extends WatchUi.WatchFace {
         }
 
         gNormalFont = WatchUi.loadResource(((city != null) && (city.length() > 0)) ?  Rez.Fonts.NormalFontCities : Rez.Fonts.NormalFont);
+    }
+
+    function updateGoalMeters() as Void {
+        if (mDrawables[:LeftGoalMeter] != null) {
+            var activityInfo = Activity.getActivityInfo();
+            if (activityInfo != null) {
+                var steps = activityInfo.steps != null ? activityInfo.steps : 0;
+                var stepGoal = activityInfo.stepGoal != null ? activityInfo.stepGoal : 10000;
+                (mDrawables[:LeftGoalMeter] as GoalMeter).setValues(steps, stepGoal, false);
+            }
+        }
+        
+        if (mDrawables[:RightGoalMeter] != null) {
+            var stats = System.getSystemStats();
+            var battery = stats.battery != null ? stats.battery : 0;
+            (mDrawables[:RightGoalMeter] as GoalMeter).setValues(battery, 100, false);
+        }
     }
 
     function updateThemeColors(){
