@@ -314,8 +314,8 @@ class GoalMeter extends WatchUi.Drawable {
             }
 
             fillHeight = fillEnd - fillStart;
-            if(fillHeight){
-                dc.fillRectangle(x, y, -fillStart - fillHeight, mWidth, fillHeight);
+            if(fillHeight > 0){
+                dc.fillRectangle(x, y - fillStart - fillHeight, mWidth, fillHeight);
             }
             segmentStart = segmentEnd + mSeparator;
 
@@ -330,7 +330,7 @@ class GoalMeter extends WatchUi.Drawable {
             :palette => [gBackgroundColor, fillColor]
         };
 
-        if((Graphics has :createBufferdBitmap)){
+        if((Graphics has :createBufferedBitmap)){
             return Graphics.createBufferedBitmap(options).get();
         }
         return new Graphics.BufferedBitmap(options);
